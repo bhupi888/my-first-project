@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REV UP — The Ultimate Car Experience</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --red: #e63946;
+      --dark: #0d0d0d;
+      --gray: #1a1a1a;
+      --light-gray: #2a2a2a;
+      --white: #f1f1f1;
+      --yellow: #ffd60a;
+    }
+
+    body {
+      background: var(--dark);
+      color: var(--white);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2.5rem;
+      background: rgba(13,13,13,0.95);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid #222;
+    }
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+    }
+    .logo span { color: var(--white); }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav ul a { color: #aaa; text-decoration: none; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+    nav ul a:hover { color: var(--red); }
+
+    /* HERO */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: radial-gradient(ellipse at 50% 60%, #1a0505 0%, #0d0d0d 70%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+    }
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--red);
+      padding: 0.3rem 1rem;
+      border-radius: 2px;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 9vw, 7rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+    }
+    .hero h1 .highlight { color: var(--red); display: block; }
+    .hero p {
+      max-width: 520px;
+      margin: 2rem auto;
+      color: #888;
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .btn {
+      padding: 0.85rem 2.2rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--red); color: #fff; border: 2px solid var(--red); }
+    .btn-primary:hover { background: transparent; color: var(--red); }
+    .btn-outline { background: transparent; color: var(--white); border: 2px solid #444; }
+    .btn-outline:hover { border-color: var(--white); }
+
+    .car-emoji {
+      font-size: clamp(5rem, 15vw, 10rem);
+      margin-bottom: 1.5rem;
+      animation: float 3s ease-in-out infinite;
+      display: block;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    /* STATS */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+    }
+    .stat {
+      flex: 1;
+      min-width: 160px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-right: 1px solid #222;
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--red);
+      display: block;
+    }
+    .stat-label { font-size: 0.75rem; letter-spacing: 2px; color: #666; text-transform: uppercase; margin-top: 0.3rem; }
+
+    /* CARS GRID */
+    .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin-bottom: 0.5rem;
+    }
+    .section-title span { color: var(--red); }
+    .section-sub { color: #666; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 3rem; }
+
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .car-card {
+      background: var(--gray);
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 2rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .car-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--red);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .car-card:hover { border-color: #444; transform: translateY(-4px); box-shadow: 0 16px 40px rgba(230,57,70,0.1); }
+    .car-card:hover::before { transform: scaleX(1); }
+    .car-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .car-name { font-size: 1.3rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+    .car-type { font-size: 0.75rem; color: var(--red); letter-spacing: 2px; text-transform: uppercase; margin: 0.3rem 0 1rem; }
+    .car-desc { color: #777; font-size: 0.9rem; line-height: 1.6; }
+    .car-specs {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #2a2a2a;
+    }
+    .spec { text-align: center; }
+    .spec-val { font-size: 1.1rem; font-weight: 800; color: var(--yellow); display: block; }
+    .spec-key { font-size: 0.65rem; color: #555; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* QUOTE */
+    .quote-section {
+      background: var(--gray);
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .quote-section blockquote {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      line-height: 1.4;
+      font-style: italic;
+      color: #ddd;
+    }
+    .quote-section blockquote span { color: var(--red); }
+    .quote-author { margin-top: 1.5rem; font-size: 0.8rem; letter-spacing: 3px; color: #555; text-transform: uppercase; }
+
+    /* FOOTER */
+    footer {
+      padding: 2.5rem;
+      text-align: center;
+      color: #444;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      border-top: 1px solid #1a1a1a;
+    }
+    footer span { color: var(--red); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Rev<span>Up</span></div>
+    <ul>
+      <li><a href="#cars">Cars</a></li>
+      <li><a href="#stats">Stats</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="car-emoji">🏎️</span>
+    <div class="hero-tag">Built for speed. Born to drive.</div>
+    <h1>
+      Drive
+      <span class="highlight">Beyond</span>
+      Limits
+    </h1>
+    <p>The world's most exciting cars — raw power, precision engineering, and the pure rush of the open road. Buckle up.</p>
+    <div class="hero-cta">
+      <a href="#cars" class="btn btn-primary">Explore Cars</a>
+      <a href="#stats" class="btn btn-outline">See the Numbers</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats" id="stats">
+    <div class="stat">
+      <span class="stat-num">1,000+</span>
+      <span class="stat-label">Horsepower Records</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">0.8s</span>
+      <span class="stat-label">0–60 Benchmark</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">300+</span>
+      <span class="stat-label">MPH Top Speed</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">Passion for Cars</span>
+    </div>
+  </div>
+
+  <!-- CARS -->
+  <div class="section" id="cars">
+    <p class="section-sub">Our Lineup</p>
+    <h2 class="section-title">Legendary <span>Machines</span></h2>
+    <div class="cars-grid">
+
+      <div class="car-card">
+        <span class="car-icon">🔴</span>
+        <div class="car-name">Ferrari SF90</div>
+        <div class="car-type">Hybrid Supercar</div>
+        <div class="car-desc">A plug-in hybrid masterpiece pushing 986 hp. Italian fury with Formula 1 DNA packed into every curve.</div>
+        <div class="car-specs">
+          <div class="spec"><span class="spec-val">986</span><span class="spec-key">HP</span></div>
+          <div class="spec"><span class="spec-val">2.5s</span><span class="spec-key">0–60</span></div>
+          <div class="spec"><span class="spec-val">211</span><span class="spec-key">MPH</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <span class="car-icon">🖤</span>
+        <div class="car-name">Bugatti Chiron</div>
+        <div class="car-type">Hypercar</div>
+        <div class="car-desc">1,500 hp. Quad-turbocharged W16 engine. The closest thing to a fighter jet you can drive on a road.</div>
+        <div class="car-specs">
+          <div class="spec"><span class="spec-val">1,500</span><span class="spec-key">HP</span></div>
+          <div class="spec"><span class="spec-val">2.3s</span><span class="spec-key">0–60</span></div>
+          <div class="spec"><span class="spec-val">304</span><span class="spec-key">MPH</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <span class="car-icon">🟡</span>
+        <div class="car-name">Lamborghini Revuelto</div>
+        <div class="car-type">V12 Hybrid</div>
+        <div class="car-desc">1,001 hp of naturally aspirated V12 fury with hybrid boost. Theatrical, wild, and completely unforgettable.</div>
+        <div class="car-specs">
+          <div class="spec"><span class="spec-val">1,001</span><span class="spec-key">HP</span></div>
+          <div class="spec"><span class="spec-val">2.5s</span><span class="spec-key">0–60</span></div>
+          <div class="spec"><span class="spec-val">217</span><span class="spec-key">MPH</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <span class="car-icon">⚡</span>
+        <div class="car-name">Rimac Nevera</div>
+        <div class="car-type">Electric Hypercar</div>
+        <div class="car-desc">The fastest accelerating production car ever made. 1,888 hp, all-electric, zero emissions, maximum devastation.</div>
+        <div class="car-specs">
+          <div class="spec"><span class="spec-val">1,888</span><span class="spec-key">HP</span></div>
+          <div class="spec"><span class="spec-val">1.85s</span><span class="spec-key">0–60</span></div>
+          <div class="spec"><span class="spec-val">258</span><span class="spec-key">MPH</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <span class="car-icon">🔵</span>
+        <div class="car-name">Porsche 911 GT3</div>
+        <div class="car-type">Track Legend</div>
+        <div class="car-desc">The purist's choice. A naturally aspirated flat-six that screams to 9,000 rpm and corners like it's on rails.</div>
+        <div class="car-specs">
+          <div class="spec"><span class="spec-val">502</span><span class="spec-key">HP</span></div>
+          <div class="spec"><span class="spec-val">3.2s</span><span class="spec-key">0–60</span></div>
+          <div class="spec"><span class="spec-val">198</span><span class="spec-key">MPH</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <span class="car-icon">🌿</span>
+        <div class="car-name">McLaren Artura</div>
+        <div class="car-type">Hybrid Sports</div>
+        <div class="car-desc">Lightweight hybrid built from the ground up. 671 hp in a car that weighs almost nothing. Precision personified.</div>
+        <div class="car-specs">
+          <div class="spec"><span class="spec-val">671</span><span class="spec-key">HP</span></div>
+          <div class="spec"><span class="spec-val">3.0s</span><span class="spec-key">0–60</span></div>
+          <div class="spec"><span class="spec-val">205</span><span class="spec-key">MPH</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-section" id="about">
+    <blockquote>
+      "A car is not just a machine. It's a <span>heartbeat</span>, a roar, a feeling of freedom that no other invention can replicate."
+    </blockquote>
+    <p class="quote-author">— Every car enthusiast, ever</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    Built with <span>♥</span> and way too much horsepower · RevUp 2026
+  </footer>
+
+</body>
+</html>
